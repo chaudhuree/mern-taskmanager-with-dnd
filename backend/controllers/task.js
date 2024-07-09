@@ -5,7 +5,7 @@ const { BadRequestError } = require("../errors");
 
 // add task
 exports.addTask = async (req, res) => {
-  const task = await Task.create({ ...req.body });
+  const task = await Task.create({ ...req.body,createdBy:req.user._id });
   res.status(StatusCodes.CREATED).json({ task });
 };
 

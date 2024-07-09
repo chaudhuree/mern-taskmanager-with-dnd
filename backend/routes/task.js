@@ -22,7 +22,7 @@ const {
 
 } =require("../controllers/task.js");
 
-router.post("/task", addTask);
+router.post("/task", authenticated,admin, addTask);
 router.get("/tasks", getAllTasks);
 router.get("/tasks/user/:userID", getTasksByUser);
 router.get("/task/:id", getTask);
