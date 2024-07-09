@@ -160,7 +160,7 @@ function UserView() {
         await updateTaskStatus(removedTask, destinationCol.title.toLowerCase());
   
         // Optional: Show success toast if needed
-        toast.success("Task moved successfully");
+        // toast.success("Task moved successfully");
       } catch (error) {
         // Handle backend update failure if needed
         console.error("Error updating task status:", error);
