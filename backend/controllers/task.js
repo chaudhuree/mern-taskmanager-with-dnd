@@ -36,6 +36,18 @@ exports.updateTask = async (req, res) => {
   res.status(StatusCodes.OK).json({ task });
 }
 
+// update status
+exports.updateTaskStatus = async (req, res) => {
+  const { id: taskID } = req.params;
+  const { status } = req.body;
+  const task = await Task.findOne({ _id: taskID });
+  if (!task) {
+    throw new BadRequestError("No task found with this ID");
+  }
+  task.status = status;
+  await task.save();
+  res.status(StatusCodes.OK).json({ task });
+}
 // delete task
 exports.deleteTask = async (req, res) => {
   const { id: taskID } = req.params;

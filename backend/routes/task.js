@@ -12,6 +12,7 @@ const {
   getTasksByUser,
   getTask,
   updateTask,
+  updateTaskStatus,
   changeTaskStatus,
   deleteTask,
   addUsersToTask,
@@ -26,6 +27,7 @@ router.get("/tasks", getAllTasks);
 router.get("/tasks/user/:userID", getTasksByUser);
 router.get("/task/:id", getTask);
 router.put("/task/:id", updateTask);
+router.put("/task/status/:id", updateTaskStatus);
 router.put("/task/status/:id", changeTaskStatus);
 router.delete("/task/:id", deleteTask);
 router.put("/task/users/:taskID", addUsersToTask);
