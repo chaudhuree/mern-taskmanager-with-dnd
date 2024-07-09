@@ -7,6 +7,7 @@ import Tasks from "./pages/Tasks";
 import axios from "axios";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import Notfound from "./pages/Notfound";
 
 axios.defaults.baseURL = "http://localhost:5000/api/v1";
 
@@ -20,8 +21,11 @@ function App() {
             <Route path="/" element={<Tasks />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
+
             <Route path="/addtask" element={<AddTask />} />
             <Route path="/updatetask/:id" element={<UpdateTask />} />
+
+            <Route path="*" element={<Notfound />} />
           </Routes>
         </Router>
       </div>

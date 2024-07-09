@@ -21,15 +21,10 @@ const reorderColumnList = (sourceCol, startIndex, endIndex) => {
 
 // Function to update the status of a task based on the destination column
 const updateTaskStatus = async (task, newStatus) => {
-  await axios.put(
-    `/task/status/${task._id}`,
-    { status: newStatus }
-  );
+  await axios.put(`/task/status/${task._id}`, { status: newStatus });
   toast.success("Task status updated successfully");
   return { ...task, status: newStatus };
 };
-
-
 
 function UserView() {
   const [tasks, setTasks] = useState([]);
@@ -41,11 +36,14 @@ function UserView() {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const { data } = await axios.get("/tasks/user/668ce70ecbf57e6c2b79c2a0", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const { data } = await axios.get(
+          `/tasks/user/${JSON.parse(localStorage.getItem("user"))._id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         setTasks(data.tasks);
         const columns = {
           "column-1": {
@@ -142,14 +140,16 @@ function UserView() {
     setState(newState);
   };
 
+  if(tasks.length === 0) return <h1 className="text-center mt-5 text-2xl">No tasks found</h1>
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <div className="p-4 text-sky-400">
         <h1 className="w-2/4 text-center mx-auto text-4xl font-extrabold my-5">
           Task Board
         </h1>
-       
+
         <div className="flex justify-between gap-4 flex-wrap px-4">
+     
           {state.columnOrder.map((columnId) => {
             const column = state.columns[columnId];
             const tasks = column.taskLists;

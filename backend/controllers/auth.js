@@ -34,6 +34,7 @@ exports.register = async (req, res) => {
         email: user.email,
         role: user.role,
         address: user.address,
+        _id: user._id,
       },
       token,
     });
@@ -68,6 +69,7 @@ exports.login = async (req, res) => {
         email: user.email,
         role: user.role,
         address: user.address,
+        _id: user._id,
       },
       token,
     });

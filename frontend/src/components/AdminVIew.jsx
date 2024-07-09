@@ -21,15 +21,10 @@ const reorderColumnList = (sourceCol, startIndex, endIndex) => {
 
 // Function to update the status of a task based on the destination column
 const updateTaskStatus = async (task, newStatus) => {
-  await axios.put(
-    `/task/status/${task._id}`,
-    { status: newStatus }
-  );
+  await axios.put(`/task/status/${task._id}`, { status: newStatus });
   toast.success("Task status updated successfully");
   return { ...task, status: newStatus };
 };
-
-
 
 function AdminView() {
   const [tasks, setTasks] = useState([]);
@@ -141,7 +136,20 @@ function AdminView() {
 
     setState(newState);
   };
-
+  if (tasks.length === 0)
+    return (
+      <>
+        <div className="flex justify-center items-center flex-col gap-4 my-10">
+          <h1 className="text-center mt-5 text-2xl">No tasks found</h1>
+          <Link
+            to="/addtask"
+            className="px-8 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600"
+          >
+            Add Task
+          </Link>
+        </div>
+      </>
+    );
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <div className="p-4 text-sky-400">
@@ -149,7 +157,10 @@ function AdminView() {
           Task Board
         </h1>
         <div className="flex justify-end my-10">
-          <Link to="/addtask"  className="px-8 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">
+          <Link
+            to="/addtask"
+            className="px-8 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600"
+          >
             Add Task
           </Link>
         </div>

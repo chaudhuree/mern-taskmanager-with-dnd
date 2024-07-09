@@ -8,14 +8,11 @@ import { toast } from "react-hot-toast";
 export default function UserTaskColumn({ column, tasks }) {
   const [userRole, setUserRole] = useState(null);
 
-
   useEffect(() => {
     if (localStorage.getItem("user")) {
       setUserRole(JSON.parse(localStorage.getItem("user")).role);
     }
   }, []);
-
-
 
   return (
     <div className="flex flex-col w-[350px] min-h-[400px] bg-white shadow-lg font-bold rounded-md border  ">
@@ -40,7 +37,7 @@ export default function UserTaskColumn({ column, tasks }) {
                       draggableSnapshot.isDragging
                         ? "bg-gray-100 border border-gray-200 shadow-2xl"
                         : ""
-                    }`}
+                    } `}
                     ref={draggableProvided.innerRef}
                     {...draggableProvided.draggableProps}
                     {...draggableProvided.dragHandleProps}
@@ -48,13 +45,12 @@ export default function UserTaskColumn({ column, tasks }) {
                     {/* Task content */}
                     <div className="flex justify-between items-center">
                       <div className="flex flex-col gap-1">
-                        <p className="text-base font-medium">{task.title}</p>
+                        <p className={`text-base font-medium`}>{task.title}</p>
                         <p className="text-sm font-normal text-gray-500 mb-2">
                           {task.description}
                         </p>
                         <UserList users={task.users} />
                       </div>
-                     
                     </div>
                   </div>
                 )}
