@@ -8,6 +8,8 @@ import toast from "react-hot-toast";
 export default function AddTask() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [priority, setPriority] = useState("normal"); // [low, normal, high]
+  const [status, setStatus] = useState("todo"); // [todo, inprogress, completed]
   const [users, setUsers] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const navigate = useNavigate();
@@ -36,6 +38,16 @@ export default function AddTask() {
     value: user._id,
     label: user.name,
   }));
+  const priorityOprions = [
+    { value: "low", label: "Low" },
+    { value: "normal", label: "Normal" },
+    { value: "high", label: "High" },
+  ];
+  const statusOptions = [
+    { value: "todo", label: "To Do" },
+    { value: "inprogress", label: "In Progress" },
+    { value: "completed", label: "Completed" },
+  ];
 
   const handleChange = (selectedOptions) => {
     setSelectedOptions(selectedOptions);
@@ -54,6 +66,8 @@ export default function AddTask() {
           title,
           description,
           users: userIds,
+          priority,
+          status,
         },
         {
           headers: {
@@ -105,9 +119,44 @@ export default function AddTask() {
               onChange={handleChange}
             />
           </div>
+          <div>
+            <label
+              className="text-gray-700 dark:text-gray-200"
+              htmlFor="priority"
+            >
+              Priority
+            </label>
+            <Select
+              id="priority"
+              options={priorityOprions}
+              onChange={(selectedOption) => setPriority(selectedOption.value)}
+              defaultValue={priorityOprions[1]}
+              className="basic-multi-select"
+              classNamePrefix="select"
+            />
+          </div>
+          <div>
+            <label
+              className="text-gray-700 dark:text-gray-200"
+              htmlFor="status"
+            >
+              Status
+            </label>
+            <Select
+              id="status"
+              options={statusOptions}
+              onChange={(selectedOption) => setStatus(selectedOption.value)}
+              defaultValue={statusOptions[0]}
+              className="basic-multi-select"
+              classNamePrefix="select"
+            />
+          </div>
         </div>
         <div className="my-6">
-          <label className="text-gray-700 dark:text-gray-200" htmlFor="description">
+          <label
+            className="text-gray-700 dark:text-gray-200"
+            htmlFor="description"
+          >
             Description
           </label>
           <input

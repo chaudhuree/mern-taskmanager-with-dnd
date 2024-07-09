@@ -43,13 +43,10 @@ export default function Navbar() {
               <div className="my-2">
                 {" "}
                 <p className="text-sm uppercase font-bold text-center text-sky-700 ">
-                  {JSON.parse(localStorage.getItem("user")).name}
-                </p>
-                <p className="text-sm font-bold text-center  ">
-                  Role:{" "}
-                  <span className="text-yellow-600">
+                  {JSON.parse(localStorage.getItem("user")).name}(
+                  <span className="text-yellow-600  lowercase">
                     {JSON.parse(localStorage.getItem("user")).role}
-                  </span>
+                  </span>)
                 </p>
               </div>
               <div className="flex justify-center items-center my-2">

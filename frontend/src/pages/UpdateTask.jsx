@@ -9,6 +9,8 @@ export default function UpdateTask() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [users, setUsers] = useState([]);
+  const [priority, setPriority] = useState(null); // change to null initially
+  const [status, setStatus] = useState(null); // change to null initially
   const [selectedOptions, setSelectedOptions] = useState([]);
   const navigate = useNavigate();
   const { id } = useParams();
@@ -27,7 +29,16 @@ export default function UpdateTask() {
           value: user._id,
           label: user.name,
         }));
+        const priority = priorityOptions.find(
+          (option) => option.value === data.task.priority
+        );
+        const status = statusOptions.find(
+          (option) => option.value === data.task.status
+        );
+
         setSelectedOptions(selectedUsers);
+        setPriority(priority);
+        setStatus(status);
       } catch (error) {
         console.error("Error fetching task:", error);
       }
@@ -45,8 +56,6 @@ export default function UpdateTask() {
           },
         });
         setUsers(data);
-        console.log("data:", data);
-        console.log("users:", users);
       } catch (error) {
         console.error("Error fetching users:", error);
       }
@@ -60,7 +69,16 @@ export default function UpdateTask() {
     value: user._id,
     label: user.name,
   }));
-
+  const priorityOptions = [
+    { value: "low", label: "Low" },
+    { value: "normal", label: "Normal" },
+    { value: "high", label: "High" },
+  ];
+  const statusOptions = [
+    { value: "todo", label: "To Do" },
+    { value: "inprogress", label: "In Progress" },
+    { value: "completed", label: "Completed" },
+  ];
   const handleChange = (selectedOptions) => {
     setSelectedOptions(selectedOptions);
   };
@@ -78,6 +96,8 @@ export default function UpdateTask() {
           title,
           description,
           users: userIds,
+          priority: priority.value,
+          status: status.value,
         },
         {
           headers: {
@@ -125,6 +145,38 @@ export default function UpdateTask() {
               isMulti
               options={options}
               onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label
+              className="text-gray-700 dark:text-gray-200"
+              htmlFor="priority"
+            >
+              Priority
+            </label>
+            <Select
+              id="priority"
+              options={priorityOptions}
+              onChange={setPriority}
+              value={priority} // set value instead of defaultValue
+              className="basic-multi-select"
+              classNamePrefix="select"
+            />
+          </div>
+          <div>
+            <label
+              className="text-gray-700 dark:text-gray-200"
+              htmlFor="status"
+            >
+              Status
+            </label>
+            <Select
+              id="status"
+              options={statusOptions}
+              onChange={setStatus}
+              value={status} // set value instead of defaultValue
+              className="basic-multi-select"
+              classNamePrefix="select"
             />
           </div>
         </div>
