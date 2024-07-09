@@ -61,7 +61,7 @@ export default function UserTaskColumn({ column, tasks }) {
                         : ""
                     } ${
                       task.priority === "high"
-                        ? "bg-red-100"
+                        ? "bg-red-200"
                         : task.priority === "normal"
                         ? "bg-yellow-100"
                         : "bg-green-100"
