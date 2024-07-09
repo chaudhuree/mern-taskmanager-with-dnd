@@ -8,8 +8,10 @@ import axios from "axios";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Notfound from "./pages/Notfound";
+import { PrivateRoute, AdminRoute } from "./components/PrivateRoute";
 
-axios.defaults.baseURL = "https://mern-taskmanager-with-dnd.onrender.com/api/v1";
+axios.defaults.baseURL = "http://localhost:5000/api/v1";
+// axios.defaults.baseURL = "https://mern-taskmanager-with-dnd.onrender.com/api/v1";
 
 function App() {
   return (
@@ -18,12 +20,33 @@ function App() {
         <Router>
           <Navbar />
           <Routes>
-            <Route path="/" element={<Tasks />} />
+            <Route
+              path="/"
+              element={
+                <PrivateRoute path="/">
+                  <Tasks />
+                </PrivateRoute>
+              }
+            />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
 
-            <Route path="/addtask" element={<AddTask />} />
-            <Route path="/updatetask/:id" element={<UpdateTask />} />
+            <Route
+              path="/addtask"
+              element={
+                <AdminRoute path="/addtask">
+                  <AddTask />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/updatetask/:id"
+              element={
+                <AdminRoute path="/updatetask/:id">
+                  <UpdateTask />
+                </AdminRoute>
+              }
+            />
 
             <Route path="*" element={<Notfound />} />
           </Routes>

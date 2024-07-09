@@ -4,6 +4,7 @@ import AdminTaskColumn from "./AdminTaskColumn";
 import { DragDropContext } from "react-beautiful-dnd";
 import axios from "axios";
 import toast from "react-hot-toast";
+import Spinner from "./Spinner";
 
 // Function to reorder tasks within the same column
 const reorderColumnList = (sourceCol, startIndex, endIndex) => {
@@ -21,17 +22,21 @@ const reorderColumnList = (sourceCol, startIndex, endIndex) => {
 
 // Function to update the status of a task based on the destination column
 const updateTaskStatus = async (task, newStatus) => {
-  await axios.put(`/task/status/${task._id}`, { status: newStatus }, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  }
+  await axios.put(
+    `/task/status/${task._id}`,
+    { status: newStatus },
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }
   );
   toast.success("Task status updated successfully");
   return { ...task, status: newStatus };
 };
 
 function AdminView() {
+  const [loading, setLoading] = useState(true); 
   const [tasks, setTasks] = useState([]);
   const [state, setState] = useState({
     columns: {},
@@ -71,76 +76,79 @@ function AdminView() {
         setState({ columns, columnOrder });
       } catch (error) {
         console.error("Error fetching tasks:", error);
+      } finally {
+        setLoading(false); 
       }
     };
 
     fetchTasks();
   }, []);
 
+  
   const handleOnDragEnd = async (result) => {
     const { destination, source } = result;
-    //  Check if the task is dropped outside the droppable area
+  
+    // Check if the task is dropped outside the droppable area
     if (!destination) return;
-    //  Check if the task is dropped in the same position
+  
+    // Check if the task is dropped in the same position
     if (
       destination.droppableId === source.droppableId &&
       destination.index === source.index
     ) {
       return;
     }
-
-    // Get the source and destination columns
+  
     const sourceCol = state.columns[source.droppableId];
     const destinationCol = state.columns[destination.droppableId];
-    // Check if the task is dropped in the same column
-    if (sourceCol.id === destinationCol.id) {
-      const newColumn = reorderColumnList(
-        sourceCol,
-        source.index,
-        destination.index
-      );
-
-      const newState = {
-        ...state,
-        columns: {
-          ...state.columns,
-          [newColumn.id]: newColumn,
-        },
-      };
-      setState(newState);
-      return;
-    }
-
-    // Move the task to a different column
-    const startTaskLists = Array.from(sourceCol.taskLists);
-    const [removed] = startTaskLists.splice(source.index, 1);
-    const newStartCol = {
+    const draggedTask = sourceCol.taskLists[source.index];
+  
+    // Optimistically update UI before backend update
+    const updatedSourceTaskLists = Array.from(sourceCol.taskLists);
+    updatedSourceTaskLists.splice(source.index, 1);
+    const updatedSourceCol = {
       ...sourceCol,
-      taskLists: startTaskLists,
+      taskLists: updatedSourceTaskLists,
     };
-
-    const endTaskLists = Array.from(destinationCol.taskLists);
-    const updatedTask = await updateTaskStatus(
-      removed,
-      destinationCol.title.toLowerCase()
-    );
-    endTaskLists.splice(destination.index, 0, updatedTask);
-    const newEndCol = {
+  
+    const updatedDestinationTaskLists = Array.from(destinationCol.taskLists);
+    updatedDestinationTaskLists.splice(destination.index, 0, draggedTask);
+    const updatedDestinationCol = {
       ...destinationCol,
-      taskLists: endTaskLists,
+      taskLists: updatedDestinationTaskLists,
     };
-
+  
     const newState = {
       ...state,
       columns: {
         ...state.columns,
-        [newStartCol.id]: newStartCol,
-        [newEndCol.id]: newEndCol,
+        [updatedSourceCol.id]: updatedSourceCol,
+        [updatedDestinationCol.id]: updatedDestinationCol,
       },
     };
-
+  
     setState(newState);
+  
+    // Backend update
+    try {
+      await updateTaskStatus(draggedTask, destinationCol.title.toLowerCase());
+  
+      // Optional: Show success toast if needed
+      // toast.success("Task moved successfully");
+    } catch (error) {
+      // Handle backend update failure if needed
+      console.error("Error updating task status:", error);
+  
+      // Revert UI changes on error (if needed)
+      setState(state); // Reset to previous state
+      toast.error("Failed to move task");
+    }
   };
+  
+
+  // Render different components based on loading and tasks availability
+  if (loading) return <Spinner />;
+
   if (tasks.length === 0)
     return (
       <>
@@ -155,6 +163,8 @@ function AdminView() {
         </div>
       </>
     );
+
+  // If tasks are available, render the main component
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <div className="p-4 text-sky-400">
@@ -169,7 +179,7 @@ function AdminView() {
             Add Task
           </Link>
         </div>
-        <div className="flex justify-center  gap-6 flex-wrap px-4">
+        <div className="flex justify-center gap-6 flex-wrap px-4">
           {state.columnOrder.map((columnId) => {
             const column = state.columns[columnId];
             const tasks = column.taskLists;
