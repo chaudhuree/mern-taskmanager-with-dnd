@@ -21,7 +21,11 @@ const reorderColumnList = (sourceCol, startIndex, endIndex) => {
 
 // Function to update the status of a task based on the destination column
 const updateTaskStatus = async (task, newStatus) => {
-  await axios.put(`/task/status/${task._id}`, { status: newStatus });
+  await axios.put(`/task/status/${task._id}`, { status: newStatus },{
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
   toast.success("Task status updated successfully");
   return { ...task, status: newStatus };
 };

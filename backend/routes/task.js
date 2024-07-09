@@ -13,7 +13,6 @@ const {
   getTask,
   updateTask,
   updateTaskStatus,
-  changeTaskStatus,
   deleteTask,
   addUsersToTask,
   removeUsersFromTask,
@@ -23,13 +22,12 @@ const {
 } =require("../controllers/task.js");
 
 router.post("/task", authenticated,admin, addTask);
-router.get("/tasks", getAllTasks);
-router.get("/tasks/user/:userID", getTasksByUser);
+router.get("/tasks",authenticated,admin, getAllTasks);
+router.get("/tasks/user/:userID",authenticated, getTasksByUser);
 router.get("/task/:id", getTask);
-router.put("/task/:id", updateTask);
-router.put("/task/status/:id", updateTaskStatus);
-router.put("/task/status/:id", changeTaskStatus);
-router.delete("/task/:id", deleteTask);
+router.put("/task/:id",authenticated,admin, updateTask);
+router.put("/task/status/:id",authenticated, updateTaskStatus);
+router.delete("/task/:id",authenticated,admin, deleteTask);
 router.put("/task/users/:taskID", addUsersToTask);
 router.delete("/task/users/:taskID", removeUsersFromTask);
 router.get("/tasks/status/:status", getTasksByStatus);
