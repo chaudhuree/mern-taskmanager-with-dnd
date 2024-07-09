@@ -32,6 +32,10 @@ const TaskSchema = new mongoose.Schema(
       type: mongoose.Schema.ObjectId,
       ref: "User",
     },
+    lastUpdatedBy: {
+      type: mongoose.Schema.ObjectId,
+      ref: "User",
+    },
   },
   { timestamps: true, versionKey: false }
 );
