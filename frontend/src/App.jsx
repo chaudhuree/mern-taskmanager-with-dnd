@@ -21,7 +21,7 @@ function App() {
           <Route path='/signin' element={<SignIn />} />
           <Route path='/signup' element={<SignUp />} />
           <Route path='/addtask' element={<AddTask />} />
-          <Route path='/updatetask' element={<UpdateTask />} />
+          <Route path='/updatetask/:id' element={<UpdateTask />} />
         </Routes>
       </Router>
     </div>
