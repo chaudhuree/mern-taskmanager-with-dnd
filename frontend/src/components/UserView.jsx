@@ -152,7 +152,7 @@ function UserView() {
           Task Board
         </h1>
 
-        <div className="flex justify-between gap-4 flex-wrap px-4">
+        <div className="flex justify-center gap-4 flex-wrap px-4">
      
           {state.columnOrder.map((columnId) => {
             const column = state.columns[columnId];

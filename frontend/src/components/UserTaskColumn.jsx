@@ -24,7 +24,7 @@ export default function UserTaskColumn({ column, tasks }) {
       <Droppable droppableId={column.id}>
         {(droppableProvided, droppableSnapshot) => (
           <div
-            className="flex flex-1 px-1 flex-col"
+            className="flex flex-1 px-1 flex-col mb-6"
             ref={droppableProvided.innerRef}
             {...droppableProvided.droppableProps}
           >
@@ -37,7 +37,13 @@ export default function UserTaskColumn({ column, tasks }) {
                       draggableSnapshot.isDragging
                         ? "bg-gray-100 border border-gray-200 shadow-2xl"
                         : ""
-                    } `}
+                    } ${
+                      task.priority === "high"
+                        ? "bg-red-100"
+                        : task.priority === "normal"
+                        ? "bg-yellow-100"
+                        : "bg-green-100"
+                    }`}
                     ref={draggableProvided.innerRef}
                     {...draggableProvided.draggableProps}
                     {...draggableProvided.dragHandleProps}

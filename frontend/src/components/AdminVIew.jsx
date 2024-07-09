@@ -21,11 +21,12 @@ const reorderColumnList = (sourceCol, startIndex, endIndex) => {
 
 // Function to update the status of a task based on the destination column
 const updateTaskStatus = async (task, newStatus) => {
-  await axios.put(`/task/status/${task._id}`, { status: newStatus },{
+  await axios.put(`/task/status/${task._id}`, { status: newStatus }, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
-  });
+  }
+  );
   toast.success("Task status updated successfully");
   return { ...task, status: newStatus };
 };
@@ -160,7 +161,7 @@ function AdminView() {
         <h1 className="w-2/4 text-center mx-auto text-4xl font-extrabold my-5">
           Task Board
         </h1>
-        <div className="flex justify-end my-10">
+        <div className="flex justify-center lg:justify-end my-10">
           <Link
             to="/addtask"
             className="px-8 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600"
@@ -168,7 +169,7 @@ function AdminView() {
             Add Task
           </Link>
         </div>
-        <div className="flex justify-between gap-4 flex-wrap px-4">
+        <div className="flex justify-center  gap-6 flex-wrap px-4">
           {state.columnOrder.map((columnId) => {
             const column = state.columns[columnId];
             const tasks = column.taskLists;

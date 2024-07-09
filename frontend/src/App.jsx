@@ -9,7 +9,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Notfound from "./pages/Notfound";
 
-axios.defaults.baseURL = "http://localhost:5000/api/v1";
+axios.defaults.baseURL = "https://mern-taskmanager-with-dnd.onrender.com/api/v1";
 
 function App() {
   return (
