@@ -11,7 +11,8 @@ import Notfound from "./pages/Notfound";
 import { PrivateRoute, AdminRoute } from "./components/PrivateRoute";
 
 // axios.defaults.baseURL = "http://localhost:5000/api/v1";
-axios.defaults.baseURL = "https://mern-taskmanager-with-dnd.onrender.com/api/v1";
+// axios.defaults.baseURL = "https://mern-taskmanager-with-dnd.onrender.com/api/v1";
+axios.defaults.baseURL = "https://mern-taskmanager-with-dnd.vercel.app/api/v1";
 
 function App() {
   return (

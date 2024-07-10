@@ -118,7 +118,9 @@ exports.updateProfile = async (req, res) => {
 
 // docs: get all users for admin purpose
 exports.getAllUsers = async (req, res) => {
-  const users = await User.find({}).select("-password -createdAt -updatedAt");
+  const users = await User.find({
+    _id: { $ne: req.user._id }, //don't show current user
+  }).select("-password -createdAt -updatedAt");
   res.status(StatusCodes.OK).json(users);
 };
 
