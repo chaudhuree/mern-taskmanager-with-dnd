@@ -31,8 +31,9 @@ const notFoundMiddleware = require("./middleware/not-found");
 const errorHandlerMiddleware = require("./middleware/error-handler");
 
 // routes middleware
-readdirSync("./routes").map((r) =>
-  app.use("/api/v1", require(`./routes/${r}`))
+const routesPath = path.resolve(__dirname, './routes');
+readdirSync(routesPath).map((r) =>
+  app.use("/api/v1", require(path.join(routesPath, r)))
 );
 
 // routes
@@ -40,12 +41,12 @@ app.get("/", (req, res) => {
   res.send("server is running");
 });
 
-//db connection
+// db connection
 const connectDB = require("./db/connect");
 
-//if no route found
+// if no route found
 app.use(notFoundMiddleware);
-//if error found custom error handler
+// if error found custom error handler
 app.use(errorHandlerMiddleware);
 
 const port = process.env.PORT || 3000;
